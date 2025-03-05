@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wellness Programs</title>
+</head>
+<body>
+    <h1>Wellness Programs</h1>
+    <ul>
+        {% for program in programs %}
+            <li>
+                <strong>{{ program.name }}</strong><br>
+                {{ program.description }}<br>
+                <em>{{ program.start_date }} to {{ program.end_date }}</em>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

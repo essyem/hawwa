@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Track Activity</title>
+</head>
+<body>
+    <h1>Welcome, {{ request.user.username }}!</h1>
+    <p>You have visited this page {{ visit_count }} times.</p>
+    <a href="{% url 'logout' %}">Logout</a>
+</body>
+</html>
