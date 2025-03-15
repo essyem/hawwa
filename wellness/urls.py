@@ -12,4 +12,3 @@ urlpatterns = [
     path('programs/', views.wellness_programs, name='wellness_programs'),
 ]
 #wellness yoga
-

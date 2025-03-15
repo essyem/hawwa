@@ -1,4 +1,4 @@
-#!/home/essyem/Appl/hawwa/venv/bin/python3
+#!/home/essyem/hawwa/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

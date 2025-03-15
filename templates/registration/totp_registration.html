@@ -1,0 +1,14 @@
+{% extends "admin/base_site.html" %}
+{% load custom_filters %}
+
+{% block content %}
+<h1>{{ title }}</h1>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Generate TOTP QR Code</button>
+</form>
+{% if qr_code_data %}
+    <img src="data:image/png;base64,{{ qr_code_data|b64encode }}" alt="TOTP QR Code">
+    <p>Scan this QR code with your authentication app to complete the setup.</p>
+{% endif %}
+{% endblock %}

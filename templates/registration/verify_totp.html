@@ -1,0 +1,11 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<h1>{{ title }}</h1>
+<form method="post">
+    {% csrf_token %}
+    <label for="totp_code">Enter TOTP Code:</label>
+    <input type="text" name="totp_code" id="totp_code" required>
+    <button type="submit">Verify</button>
+</form>
+{% endblock %}

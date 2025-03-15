@@ -7,13 +7,22 @@ OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 SECRET_KEY = os.getenv('SECRET_KEY')
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-# SECURITY WARNING: keep the secret key used in production secret!
-#SECRET_KEY = 'your-secret-key'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = False
-ALLOWED_HOSTS = ['*']
-
+ALLOWED_HOSTS = ['dev.hawwa.online', 'localhost', '127.0.0.1']
+# Add trusted origins for CSRF and CORS
+CSRF_TRUSTED_ORIGINS = ['https://dev.hawwa.online']
+CORS_ALLOWED_ORIGINS = ['https://dev.hawwa.online']
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True
+CSP_DEFAULT_SRC = ("'self'", 'https://dev.hawwa.online')
+CROSS_ORIGIN_OPENER_POLICY = 'same-origin'
+ROOT_URLCONF = 'hawwa.urls'
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -27,10 +36,13 @@ INSTALLED_APPS = [
     'adminops',
     'clients',
     'vendors',
+    'django_otp',
+    'django_otp.plugins.otp_totp',
+    'hawwa',
 ]
-
+'''
 # Database
-DATABASES = {
+#DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('DB_NAME', 'HawwaSTG'),
@@ -41,10 +53,11 @@ DATABASES = {
     }
 }
 '''
-#DATABASES = {
+
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'HawwaSTG',
+        'NAME': 'hawwastg',
         'USER': 'dbadmin',
         'PASSWORD': '0penP@$$',
         'HOST': 'localhost',
@@ -52,11 +65,11 @@ DATABASES = {
     }
 }
 
-'''
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -73,6 +86,7 @@ TEMPLATES = [
     },
 ]
 
+
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
@@ -80,13 +94,6 @@ STATICFILES_FINDERS = [
 
 from pathlib import Path
 from dotenv import load_dotenv
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-#BASE_DIR = Path(__file__).resolve().parent.parent
-#export DJANGO_SETTINGS_MODULE=myproject.settings
-#settings.configure()
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-#ALLOWED_HOSTS = ['*']  # Allows all hosts (not secure for production)
 SECRET_KEY = 'django-insecure-q5%tx0(i2--6%r3=an*il-n_ybv@@#h11&(%y9ls6y5(twhcrr'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -100,9 +107,19 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'csp.middleware.CSPMiddleware',
 ]
-
+'''
+CSP_DEFAULT_SRC = ("'self'", 'https://dev.hawwa.online')
+CROSS_ORIGIN_OPENER_POLICY = 'same-origin'
 ROOT_URLCONF = 'hawwa.urls'
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+'''
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -119,7 +136,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'hawwa.wsgi.application'
+#WSGI_APPLICATION = 'hawwa.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -148,11 +165,36 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
-#DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-#load_dotenv()  # Load environment variables from .env file
-#OPENAI_API_KEY = os.getenv('OPENAI_API_KEY', 'your-api-key-here')
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'mail.infinifyservices.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'hello@infinifyservices.com'
+EMAIL_HOST_PASSWORD = '0penP@$$'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/var/log/django/django.log',
+            'formatter': 'verbose',
+        },
+    },
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
 
