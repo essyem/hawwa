@@ -7,8 +7,8 @@ OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 SECRET_KEY = os.getenv('SECRET_KEY')
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ALLOWED_HOSTS = ['dev.hawwa.online', 'localhost', '127.0.0.1']
-# Add trusted origins for CSRF and CORS
+ALLOWED_HOSTS = ['dev.hawwa.online', 'localhost', '127.0.0.1', '0.0.0.0']
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 CSRF_TRUSTED_ORIGINS = ['https://dev.hawwa.online']
 CORS_ALLOWED_ORIGINS = ['https://dev.hawwa.online']
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -40,19 +40,6 @@ INSTALLED_APPS = [
     'django_otp.plugins.otp_totp',
     'hawwa',
 ]
-'''
-# Database
-#DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME', 'HawwaSTG'),
-        'USER': os.getenv('DB_USER', 'dbadmin'),
-        'PASSWORD': os.getenv('DB_PASSWORD', '0penP@$$'),
-        'HOST': os.getenv('DB_HOST', 'localhost'),
-        'PORT': os.getenv('DB_PORT', '5432'),
-    }
-}
-'''
 
 DATABASES = {
     'default': {

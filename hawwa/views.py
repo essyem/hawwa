@@ -8,9 +8,10 @@ import qrcode
 import io
 from django.contrib.auth.decorators import login_required
 from django_otp.plugins.otp_totp.models import TOTPDevice
+from django.http import HttpResponse
 
 def home(request):
-    return render(request, 'home.html', {'title': 'Welcome to Hawwa Wellness', 'subtitle': None})  # Add 'subtitle'
+    return render(request, 'home.html', {'title': 'Welcome to Hawwa Wellness'})
 
 def register(request):
     if request.method == 'POST':
@@ -74,6 +75,8 @@ def register_totp_device(request):
         'subtitle': 'Secure your account with TOTP'
     })
 
+from django.shortcuts import render
+
 @login_required
 def verify_totp(request):
     if request.method == 'POST':
@@ -86,9 +89,16 @@ def verify_totp(request):
             user.save()
             return redirect('home')
         else:
-            return HttpResponse("Invalid TOTP code.")
+            messages.error(request, "Invalid TOTP code. Please try again.")
+            return render(request, 'registration/verify_totp.html', {
+                'title': 'Verify TOTP Code',
+                'subtitle': 'Enter your TOTP code to verify',
+            })
 
-    return render(request, 'registration/verify_totp.html', {'title': 'Verify TOTP Code', 'subtitle': 'Enter your TOTP code to verify'})
+    return render(request, 'registration/verify_totp.html', {
+        'title': 'Verify TOTP Code',
+        'subtitle': 'Enter your TOTP code to verify',
+    })
 
 def verify_otp(request):
     # Your logic for verifying OTP
