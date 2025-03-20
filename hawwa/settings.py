@@ -23,6 +23,9 @@ CSRF_COOKIE_SECURE = True
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
+
+AUTH_USER_MODEL = 'hawwa.CustomUser'
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -36,8 +39,8 @@ INSTALLED_APPS = [
     'adminops',
     'clients',
     'vendors',
-    'django_otp',
-    'django_otp.plugins.otp_totp',
+    #'django_otp',
+    #'django_otp.plugins.otp_totp',
     'hawwa',
 ]
 
@@ -94,8 +97,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'csp.middleware.CSPMiddleware',
 ]
+
 '''
 CSP_DEFAULT_SRC = ("'self'", 'https://dev.hawwa.online')
 CROSS_ORIGIN_OPENER_POLICY = 'same-origin'

@@ -1,12 +1,28 @@
-from rest_framework import generics
-from .models import Hotel
-from .serializers import HotelSerializer
-from django.http import JsonResponse
+# vendors/views.py
+from rest_framework import viewsets
+from .models import Hotel, NursingProvider, Department, EmployeeType, Employee, CloudKitchen
+from .serializers import HotelSerializer, NursingProviderSerializer, DepartmentSerializer, EmployeeTypeSerializer, EmployeeSerializer, CloudKitchenSerializer
 
-def vendor_list(request):
-    return JsonResponse({"message": "Vendor list endpoint"})
-
-class HotelListCreateView(generics.ListCreateAPIView):
+class HotelViewSet(viewsets.ModelViewSet):
     queryset = Hotel.objects.all()
     serializer_class = HotelSerializer
-# Create your views here.
+
+class NursingProviderViewSet(viewsets.ModelViewSet):
+    queryset = NursingProvider.objects.all()
+    serializer_class = NursingProviderSerializer
+
+class DepartmentViewSet(viewsets.ModelViewSet):
+    queryset = Department.objects.all()
+    serializer_class = DepartmentSerializer
+
+class EmployeeTypeViewSet(viewsets.ModelViewSet):
+    queryset = EmployeeType.objects.all()
+    serializer_class = EmployeeTypeSerializer
+
+class EmployeeViewSet(viewsets.ModelViewSet):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
+
+class CloudKitchenViewSet(viewsets.ModelViewSet):
+    queryset = CloudKitchen.objects.all()
+    serializer_class = CloudKitchenSerializer

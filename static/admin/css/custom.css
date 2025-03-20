@@ -1,0 +1,9 @@
+class HawwaAdminSite(AdminSite):
+    site_header = "Hawwa Wellness Admin Panel"
+    site_title = "Hawwa Wellness Portal"
+    index_title = "Welcome to Hawwa Wellness"
+
+    def each_context(self, request):
+        context = super().each_context(request)
+        context['css_custom'] = 'admin/css/custom.css'
+        return context

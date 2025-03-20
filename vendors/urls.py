@@ -1,8 +1,16 @@
-from django.urls import path
-from .views import HotelListCreateView
-from . import views
+# vendors/urls.py
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import HotelViewSet, NursingProviderViewSet, DepartmentViewSet, EmployeeTypeViewSet, EmployeeViewSet, CloudKitchenViewSet
+
+router = DefaultRouter()
+router.register(r'hotels', HotelViewSet)
+router.register(r'nursing-providers', NursingProviderViewSet)
+router.register(r'departments', DepartmentViewSet)
+router.register(r'employee-types', EmployeeTypeViewSet)
+router.register(r'employees', EmployeeViewSet)
+router.register(r'cloudkitchen', CloudKitchenViewSet)
 
 urlpatterns = [
-    path('', views.vendor_list, name='vendor-list'),
-    path('hotels/', HotelListCreateView.as_view(), name='hotel-list-create'),
+    path('', include(router.urls)),
 ]
