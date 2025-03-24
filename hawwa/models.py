@@ -38,3 +38,6 @@ class EmailOTP(models.Model):
 
     def __str__(self):
         return f"OTP for {self.user.username} created at {self.created_at}"
+
+#class Sales(models.Model):
+

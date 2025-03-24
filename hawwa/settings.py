@@ -42,6 +42,10 @@ INSTALLED_APPS = [
     #'django_otp',
     #'django_otp.plugins.otp_totp',
     'hawwa',
+    'report_builder',
+    'django_tables2',
+    'django_filters',
+    'django_seed',
 ]
 
 DATABASES = {
@@ -124,6 +128,18 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+#Reports
+REPORT_BUILDER_INCLUDE = [
+    'vendors.models.*',  # Include all models from the vendors app
+    'clients.models.*',  # Include all models from the clients app
+    'adminops.models.*', # Include all models from the adminops app
+]
+
+REPORT_BUILDER_EXCLUDE = [
+    'auth.*',  # Exclude auth models
+    'admin.*',  # Exclude admin models
 ]
 
 #WSGI_APPLICATION = 'hawwa.wsgi.application'

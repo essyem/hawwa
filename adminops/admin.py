@@ -1,30 +1,15 @@
-from hawwa.models import CustomUser
-from adminops.forms import UserCreationForm
-from adminops.models import Department, UserProfile, Expense, Revenue, Report
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import Group
+from hawwa.models import CustomUser
+from adminops.forms import UserCreationForm
+from adminops.models import (
+    Department, UserProfile, Expense, Revenue, Category, Tag, Attachment, Budget,
+    Vendor, Invoice, Payment, Employee, Payroll, Tax, TaxApplication, Sales
+)
 
 # Register Department model
 admin.site.register(Department)
-
-# Register Expense model
-@admin.register(Expense)
-class ExpenseAdmin(admin.ModelAdmin):
-    list_display = ('category', 'amount', 'date')
-    search_fields = ('category', 'description')
-
-# Register Revenue model
-@admin.register(Revenue)
-class RevenueAdmin(admin.ModelAdmin):
-    list_display = ('source', 'amount', 'date')
-    search_fields = ('source', 'description')
-
-# Register Report model
-@admin.register(Report)
-class ReportAdmin(admin.ModelAdmin):
-    list_display = ('title', 'generated_on')
-    search_fields = ('title',)
 
 # Register UserProfile model
 @admin.register(UserProfile)
@@ -54,7 +39,6 @@ class UserProfileAdmin(admin.ModelAdmin):
         from django.shortcuts import render
         from django.http import HttpResponseRedirect
         from django.urls import reverse
-        from adminops.forms import UserCreationForm
 
         if request.method == 'POST':
             form = UserCreationForm(request.POST)
@@ -86,3 +70,83 @@ class CustomUserAdmin(UserAdmin):
     list_display = ('username', 'email', 'first_name', 'last_name', 'department', 'is_staff')
     search_fields = ('username', 'email', 'first_name', 'last_name')
     ordering = ('username',)
+
+# Register Category model
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'description')
+
+# Register Tag model
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
+# Register Attachment model
+@admin.register(Attachment)
+class AttachmentAdmin(admin.ModelAdmin):
+    list_display = ('file', 'uploaded_at')
+
+# Register Expense model
+@admin.register(Expense)
+class ExpenseAdmin(admin.ModelAdmin):
+    list_display = ('amount', 'description', 'date', 'category')
+    filter_horizontal = ('tags', 'attachments')
+
+# Register Revenue model
+@admin.register(Revenue)
+class RevenueAdmin(admin.ModelAdmin):
+    list_display = ('amount', 'description', 'date', 'category')
+    filter_horizontal = ('tags', 'attachments')
+
+# Register Budget model
+@admin.register(Budget)
+class BudgetAdmin(admin.ModelAdmin):
+    list_display = ('department', 'amount', 'spent_amount', 'remaining_budget')
+    readonly_fields = ('remaining_budget',)  # Make remaining_budget read-only
+
+
+# Register Vendor model
+@admin.register(Vendor)
+class VendorAdmin(admin.ModelAdmin):
+    list_display = ('name', 'contact', 'email')
+    search_fields = ('name', 'contact', 'email')
+
+# Register Invoice model
+@admin.register(Invoice)
+class InvoiceAdmin(admin.ModelAdmin):
+    list_display = ('invoice_number', 'date', 'client', 'amount', 'vendor')
+    search_fields = ('invoice_number', 'client', 'vendor__name')
+
+# Register Payment model
+@admin.register(Payment)
+class PaymentAdmin(admin.ModelAdmin):
+    list_display = ('invoice', 'amount', 'date', 'payment_method')
+    search_fields = ('invoice__invoice_number', 'payment_method')
+
+# Register Employee model
+@admin.register(Employee)
+class EmployeeAdmin(admin.ModelAdmin):
+    list_display = ('name', 'salary')
+    search_fields = ('name',)
+
+# Register Payroll model
+@admin.register(Payroll)
+class PayrollAdmin(admin.ModelAdmin):
+    list_display = ('employee', 'date', 'salary', 'deductions', 'net_salary')
+    readonly_fields = ('net_salary',)
+
+    def net_salary(self, obj):
+        return obj.net_salary
+    net_salary.short_description = 'Net Salary'
+
+# Register Tax model
+@admin.register(Tax)
+class TaxAdmin(admin.ModelAdmin):
+    list_display = ('name', 'rate')
+    search_fields = ('name',)
+
+# Register TaxApplication model
+@admin.register(TaxApplication)
+class TaxApplicationAdmin(admin.ModelAdmin):
+    list_display = ('tax', 'revenue', 'expense', 'amount')
+    search_fields = ('tax__name', 'revenue__description', 'expense__description')

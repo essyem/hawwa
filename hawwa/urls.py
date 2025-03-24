@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls, name='default_admin'),  # Default admin site
     # Auth-related URLs
     path('accounts/', include('django.contrib.auth.urls')),
+    #path('adminops/', include('adminops.urls')),
 
     # API endpoints
     path('api/vendors/', include('vendors.urls')),
